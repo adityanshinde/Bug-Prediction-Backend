@@ -1,0 +1,49 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\BugPredictionBackend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bugpredictionbackend\\project docs\\backend-dev-plan.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:project docs\\backend-dev-plan.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Backend-Dev-Plan.md",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\BugPredictionBackend\\Project Docs\\Backend-Dev-Plan.md",
+              "RelativeDocumentMoniker": "Project Docs\\Backend-Dev-Plan.md",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\BugPredictionBackend\\Project Docs\\Backend-Dev-Plan.md",
+              "RelativeToolTip": "Project Docs\\Backend-Dev-Plan.md",
+              "ViewState": "AgIAAMIDAAAAAAAAAAAAAMgDAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-02-24T16:18:47.94Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

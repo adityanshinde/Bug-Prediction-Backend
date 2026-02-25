@@ -1,0 +1,6 @@
+@BugPredictionBackend_HostAddress = http://localhost:5234
+
+GET {{BugPredictionBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
