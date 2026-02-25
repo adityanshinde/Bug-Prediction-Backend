@@ -105,3 +105,4 @@ C:\Aditya Dev Backup\Personal\Bug-Prediction-And-Code-Quality\Bug-Prediction-Bac
 C:\Aditya Dev Backup\Personal\Bug-Prediction-And-Code-Quality\Bug-Prediction-Backend\obj\Debug\net8.0\BugPredictionBackend.pdb
 C:\Aditya Dev Backup\Personal\Bug-Prediction-And-Code-Quality\Bug-Prediction-Backend\obj\Debug\net8.0\BugPredictionBackend.genruntimeconfig.cache
 C:\Aditya Dev Backup\Personal\Bug-Prediction-And-Code-Quality\Bug-Prediction-Backend\obj\Debug\net8.0\ref\BugPredictionBackend.dll
+C:\Aditya Dev Backup\Personal\Bug-Prediction-And-Code-Quality\Bug-Prediction-Backend\bin\Debug\net8.0\secrets.json

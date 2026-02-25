@@ -3,8 +3,28 @@
   "WorkspaceRootPath": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\project docs\\frontend-api-how-to-use.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:project docs\\frontend-api-how-to-use.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\controllers\\read\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -42,7 +62,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -58,20 +78,85 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "QualityGatesController.cs",
-              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\QualityGatesController.cs",
-              "RelativeDocumentMoniker": "Controllers\\Read\\QualityGatesController.cs",
-              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\QualityGatesController.cs",
-              "RelativeToolTip": "Controllers\\Read\\QualityGatesController.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAABUwAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "secrets.json",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\secrets.json",
+              "RelativeDocumentMoniker": "secrets.json",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\secrets.json",
+              "RelativeToolTip": "secrets.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-25T09:18:28.595Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-25T08:06:31.465Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-02-25T07:59:24.244Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-25T07:50:09.789Z",
+              "WhenOpened": "2026-02-25T07:49:06.774Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Frontend-API-How-To-Use.md",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Project Docs\\Frontend-API-How-To-Use.md",
+              "RelativeDocumentMoniker": "Project Docs\\Frontend-API-How-To-Use.md",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Project Docs\\Frontend-API-How-To-Use.md",
+              "RelativeToolTip": "Project Docs\\Frontend-API-How-To-Use.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEoDAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-02-25T08:05:27.105Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
+              "Title": "README.md",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\README.md",
+              "RelativeDocumentMoniker": "README.md",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\README.md",
+              "RelativeToolTip": "README.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-02-25T07:56:34.932Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "MetricsController.cs",
               "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\MetricsController.cs",
               "RelativeDocumentMoniker": "Controllers\\Read\\MetricsController.cs",
@@ -84,20 +169,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAF8AAAAAAAAAAAAiwAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 11,
+              "Title": "QualityGatesController.cs",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\QualityGatesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Read\\QualityGatesController.cs",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\QualityGatesController.cs",
+              "RelativeToolTip": "Controllers\\Read\\QualityGatesController.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAABUwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-25T07:49:06.774Z",
+              "WhenOpened": "2026-02-25T07:50:09.789Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 12,
               "Title": "ScanHistoryController.cs",
               "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\ScanHistoryController.cs",
               "RelativeDocumentMoniker": "Controllers\\Read\\ScanHistoryController.cs",
@@ -110,7 +195,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "DashboardController.cs",
               "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\DashboardController.cs",
               "RelativeDocumentMoniker": "Controllers\\Read\\DashboardController.cs",
@@ -123,7 +208,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "ProjectsController.cs",
               "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\ProjectsController.cs",
               "RelativeDocumentMoniker": "Controllers\\Read\\ProjectsController.cs",
@@ -136,7 +221,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "SyncController.cs",
               "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Sync\\SyncController.cs",
               "RelativeDocumentMoniker": "Controllers\\Sync\\SyncController.cs",
@@ -149,7 +234,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "Project-WorkFlow.md",
               "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Project Docs\\Project-WorkFlow.md",
               "RelativeDocumentMoniker": "Project Docs\\Project-WorkFlow.md",
