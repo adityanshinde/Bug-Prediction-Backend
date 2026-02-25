@@ -139,6 +139,7 @@ BugPredictionBackend/
 ?       ??? MetricsReadRepository.cs
 ?       ??? QualityGateReadRepository.cs
 ?       ??? ScanHistoryReadRepository.cs
+?       ??? QAReadRepository.cs
 ?
 ??? ?? Models/
 ?   ??? ?? Entities/              ? Mirror of DB table columns
@@ -568,7 +569,7 @@ When the app starts, `Program.cs` does these things in order:
 4. Register Read Repositories (Scoped)
        ProjectReadRepository, DashboardReadRepository,
        MetricsReadRepository, QualityGateReadRepository,
-       ScanHistoryReadRepository
+       ScanHistoryReadRepository, QAReadRepository
 
 5. Register SonarApiClient (Scoped)
 
@@ -673,35 +674,40 @@ STEP 8 – Angular receives structured data
 | `appsettings.json` | All environment config (token, DB, CORS) |
 | `SonarSettings.cs` | Typed config POCO for SonarCloud settings |
 | `SonarApiClient.cs` | ALL calls to SonarCloud – nowhere else calls Sonar |
-| `SyncService.cs` | Orchestrates the full Sonar ? DB sync pipeline |
+| `SyncService.cs` | Orchestrates the full Sonar ? DB sync pipeline + conditions |
 | `SonarSyncHostedService.cs` | Runs SyncService on a 6-hour timer in background |
 | `ProjectRepository.cs` | Insert/update projects in DB |
 | `BranchRepository.cs` | Insert/update branches in DB |
 | `SnapshotRepository.cs` | Insert new snapshots + get latest snapshot |
 | `ModuleRepository.cs` | Insert module metrics + read modules by snapshot |
 | `SeverityRepository.cs` | Insert severity distribution + read by snapshot |
+| `QualityGateConditionRepository.cs` | Insert per-condition gate data per snapshot |
+| `QAEntryRepository.cs` | Insert manual QA form entries per project |
 | `ProjectReadRepository.cs` | Read project list and existence check |
 | `DashboardReadRepository.cs` | Read header info and recent scans |
 | `MetricsReadRepository.cs` | Read KPIs, coverage trend, bugs vs vulns history |
 | `QualityGateReadRepository.cs` | Read quality gate history |
 | `ScanHistoryReadRepository.cs` | Read full scan history list |
+| `QAReadRepository.cs` | Read gate conditions by snapshot + QA entries + QA summary |
 | `ProjectService.cs` | Maps projects to ProjectListDto, existence check |
 | `DashboardService.cs` | Assembles DashboardDto and HeaderDto |
 | `MetricsService.cs` | Assembles MetricsDto and RiskAnalysisDto |
-| `QualityGateService.cs` | Assembles QualityGateDto |
+| `QualityGateService.cs` | Assembles QualityGateDto with real conditions |
 | `ScanHistoryService.cs` | Returns scan history list |
+| `QAService.cs` | Handles QA entry submission and summary assembly |
 | `SyncController.cs` | Exposes manual sync trigger endpoints |
 | `ProjectsController.cs` | Exposes GET /api/projects |
 | `DashboardController.cs` | Exposes header + dashboard endpoints |
 | `MetricsController.cs` | Exposes metrics + risk-analysis endpoints |
 | `QualityGatesController.cs` | Exposes quality-gates endpoint |
 | `ScanHistoryController.cs` | Exposes scan-history endpoint |
-| `Models/Entities/` | DB row representations (5 files) |
+| `QAController.cs` | Exposes POST + GET /api/projects/{id}/qa-entries |
+| `Models/Entities/` | DB row representations (7 files) |
 | `Models/Sonar/` | SonarCloud JSON response shapes (8 files) |
-| `Models/DTOs/` | Angular-facing response shapes (7 files) |
-| `SQL/01_*.sql` | Creates BPCQDB database + all 5 tables + indexes |
-| `SQL/02_*.sql` | All 5 stored procedures for write (sync) operations |
-| `SQL/03_*.sql` | All 11 stored procedures for read (frontend) operations |
+| `Models/DTOs/` | Angular-facing response shapes (8 files) |
+| `SQL/01_*.sql` | Creates BPCQDB + all 7 tables + indexes |
+| `SQL/02_*.sql` | All 7 stored procedures for write (sync) operations |
+| `SQL/03_*.sql` | All 14 stored procedures for read (frontend) operations |
 
 ---
 

@@ -25,6 +25,8 @@ builder.Services.AddScoped<BranchRepository>();
 builder.Services.AddScoped<SnapshotRepository>();
 builder.Services.AddScoped<ModuleRepository>();
 builder.Services.AddScoped<SeverityRepository>();
+builder.Services.AddScoped<QualityGateConditionRepository>();
+builder.Services.AddScoped<QAEntryRepository>();
 
 // ── Read Repositories ─────────────────────────────────────────────────────────
 builder.Services.AddScoped<ProjectReadRepository>();
@@ -32,6 +34,7 @@ builder.Services.AddScoped<DashboardReadRepository>();
 builder.Services.AddScoped<MetricsReadRepository>();
 builder.Services.AddScoped<QualityGateReadRepository>();
 builder.Services.AddScoped<ScanHistoryReadRepository>();
+builder.Services.AddScoped<QAReadRepository>();
 
 // ── Sonar API Client ──────────────────────────────────────────────────────────
 builder.Services.AddScoped<SonarApiClient>();
@@ -45,6 +48,7 @@ builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<MetricsService>();
 builder.Services.AddScoped<QualityGateService>();
 builder.Services.AddScoped<ScanHistoryService>();
+builder.Services.AddScoped<QAService>();
 
 // ── Background Sync ───────────────────────────────────────────────────────────
 builder.Services.AddHostedService<SonarSyncHostedService>();
@@ -61,7 +65,6 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader()
               .AllowAnyMethod()
     ));
-
 
 // ── Controllers & Swagger ─────────────────────────────────────────────────────
 builder.Services.AddControllers();

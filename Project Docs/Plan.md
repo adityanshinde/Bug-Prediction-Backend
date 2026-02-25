@@ -121,3 +121,23 @@
 
 - [x] Build verification
 - [x] Update Status.md
+
+---
+
+## ?? Phase 13 – QA Analysis & Quality Gate Conditions Fix (2026-02-25)
+
+- [x] `SQL/01_` – Add `QualityGateConditions` table + `ManualQAEntries` table + indexes
+- [x] `SQL/02_` – Add `sp_InsertQualityGateCondition` + `sp_InsertManualQAEntry`
+- [x] `SQL/03_` – Add `sp_GetConditionsBySnapshot` + `sp_GetManualQAEntries` + `sp_GetQASummary`
+- [x] `Models/Entities/QualityGateConditionEnt.cs`
+- [x] `Models/Entities/ManualQAEntryEnt.cs`
+- [x] `Models/DTOs/QAEntryDto.cs` – QAEntryRequestDto, QAEntryResponseDto, QASummaryDto
+- [x] `Repositories/Sync/QualityGateConditionRepository.cs`
+- [x] `Repositories/Sync/QAEntryRepository.cs`
+- [x] `Repositories/Read/QAReadRepository.cs`
+- [x] `Services/Sync/SyncService.cs` – wired `SyncConditionsAsync` to save per-condition data
+- [x] `Services/Read/QualityGateService.cs` – now populates `GateConditions` from DB
+- [x] `Services/Read/QAService.cs`
+- [x] `Controllers/Read/QAController.cs` – POST + GET /api/projects/{id}/qa-entries
+- [x] `Program.cs` – registered all new repos and services
+- [x] Build verification – 0 errors

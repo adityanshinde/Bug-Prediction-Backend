@@ -12,6 +12,7 @@ public class SyncService(
     SnapshotRepository snapshotRepository,
     ModuleRepository moduleRepository,
     SeverityRepository severityRepository,
+    QualityGateConditionRepository qualityGateConditionRepository,
     ILogger<SyncService> logger)
 {
     public async Task SyncAllProjectsAsync()
@@ -93,6 +94,7 @@ public class SyncService(
 
         await SyncSeverityAsync(sonarProject.Key, snapshotId);
         await SyncModulesAsync(sonarProject.Key, snapshotId);
+        await SyncConditionsAsync(qualityGate, snapshotId);
 
         logger.LogInformation("Project synced: {ProjectKey} | SnapshotId: {SnapshotId}", sonarProject.Key, snapshotId);
     }
@@ -142,6 +144,24 @@ public class SyncService(
             };
 
             await moduleRepository.InsertAsync(module);
+        }
+    }
+
+    private async Task SyncConditionsAsync(SonarQualityGateResponseEnt? qualityGate, int snapshotId)
+    {
+        List<SonarQualityGateConditionEnt> conditions = qualityGate?.ProjectStatus?.Conditions ?? [];
+
+        foreach (SonarQualityGateConditionEnt condition in conditions)
+        {
+            await qualityGateConditionRepository.InsertAsync(new QualityGateConditionEnt
+            {
+                SnapshotId     = snapshotId,
+                MetricKey      = condition.MetricKey,
+                Comparator     = condition.Comparator,
+                ErrorThreshold = condition.ErrorThreshold,
+                ActualValue    = condition.ActualValue,
+                Status         = condition.Status
+            });
         }
     }
 

@@ -176,8 +176,10 @@ Serves structured data to the Angular dashboard.
 | `GET` | `/api/projects/{id}/dashboard` | KPIs + severity distribution + recent scans |
 | `GET` | `/api/projects/{id}/metrics` | Coverage trend + bugs vs vulns + module table |
 | `GET` | `/api/projects/{id}/risk-analysis` | Module risk distribution + high risk modules |
-| `GET` | `/api/projects/{id}/quality-gates` | Current gate status + full gate history |
+| `GET` | `/api/projects/{id}/quality-gates` | Gate status + **real conditions** + history |
 | `GET` | `/api/projects/{id}/scan-history` | Complete scan history list |
+| `GET` | `/api/projects/{id}/qa-entries` | QA summary + all manual QA entries |
+| `POST` | `/api/projects/{id}/qa-entries` | Submit a manual QA entry from the QA form |
 
 **Standard response codes:**
 
@@ -196,8 +198,12 @@ Serves structured data to the Angular dashboard.
 Projects
   ??? Branches  (FK: ProjectId)
         ??? Snapshots  (FK: ProjectId, BranchId)
-              ??? ModuleMetrics         (FK: SnapshotId)
-              ??? SeverityDistribution  (FK: SnapshotId)
+              ??? ModuleMetrics            (FK: SnapshotId)
+              ??? SeverityDistribution     (FK: SnapshotId)
+              ??? QualityGateConditions    (FK: SnapshotId)
+
+Projects
+  ??? ManualQAEntries  (FK: ProjectId)
 ```
 
 | Table | Purpose |
@@ -207,6 +213,8 @@ Projects
 | `Snapshots` | **Immutable** — one new row per scan, never updated |
 | `ModuleMetrics` | Per-file/directory metrics linked to a snapshot |
 | `SeverityDistribution` | BLOCKER/CRITICAL/MAJOR/MINOR/INFO counts per snapshot |
+| `QualityGateConditions` | Per-condition details from SonarCloud gate evaluation |
+| `ManualQAEntries` | Manual QA form submissions per project |
 
 > **Key rule:** Snapshots are **never overwritten** — every sync creates a new row, preserving full history.
 

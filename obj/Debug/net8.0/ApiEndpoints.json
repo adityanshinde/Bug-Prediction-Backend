@@ -70,6 +70,49 @@
     ]
   },
   {
+    "ContainingType": "BugPredictionBackend.Controllers.Read.QAController",
+    "Method": "SubmitEntry",
+    "RelativePath": "api/projects/{projectId}/qa-entries",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "BugPredictionBackend.Models.DTOs.QAEntryRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [],
+    "Tags": [
+      "Database to Frontend"
+    ]
+  },
+  {
+    "ContainingType": "BugPredictionBackend.Controllers.Read.QAController",
+    "Method": "GetEntries",
+    "RelativePath": "api/projects/{projectId}/qa-entries",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [],
+    "Tags": [
+      "Database to Frontend"
+    ]
+  },
+  {
     "ContainingType": "BugPredictionBackend.Controllers.Read.QualityGatesController",
     "Method": "GetQualityGates",
     "RelativePath": "api/projects/{projectId}/quality-gates",

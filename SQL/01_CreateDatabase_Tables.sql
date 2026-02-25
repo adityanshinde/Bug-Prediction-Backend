@@ -103,12 +103,46 @@ CREATE TABLE SeverityDistribution
 GO
 
 -- ============================================================
--- INDEXES
+-- ADDED: 2026-02-25
+-- TABLE: QualityGateConditions
+-- Stores per-condition details from qualitygates/project_status
 -- ============================================================
-CREATE INDEX IX_Branches_ProjectId         ON Branches(ProjectId);
-CREATE INDEX IX_Snapshots_ProjectId        ON Snapshots(ProjectId);
-CREATE INDEX IX_Snapshots_ScanDate         ON Snapshots(ScanDate);
-CREATE INDEX IX_Snapshots_BranchId         ON Snapshots(BranchId);
-CREATE INDEX IX_ModuleMetrics_SnapshotId   ON ModuleMetrics(SnapshotId);
-CREATE INDEX IX_Severity_SnapshotId        ON SeverityDistribution(SnapshotId);
+CREATE TABLE QualityGateConditions
+(
+    Id             INT           PRIMARY KEY IDENTITY(1,1),
+    SnapshotId     INT           NOT NULL,
+    MetricKey      NVARCHAR(100) NOT NULL,
+    Comparator     NVARCHAR(10)  NULL,   -- GT / LT
+    ErrorThreshold NVARCHAR(50)  NULL,
+    ActualValue    NVARCHAR(50)  NULL,
+    Status         NVARCHAR(10)  NOT NULL, -- OK / ERROR
+    CONSTRAINT FK_QGConditions_Snapshots FOREIGN KEY (SnapshotId) REFERENCES Snapshots(Id)
+);
+GO
+
+-- ============================================================
+-- ADDED: 2026-02-25
+-- TABLE: ManualQAEntries
+-- Stores manual QA form submissions per project
+-- ============================================================
+CREATE TABLE ManualQAEntries
+(
+    Id            INT            PRIMARY KEY IDENTITY(1,1),
+    ProjectId     INT            NOT NULL,
+    ModuleName    NVARCHAR(500)  NOT NULL,
+    IssueType     NVARCHAR(100)  NOT NULL,   -- Bug / Vulnerability / Code Smell
+    Severity      NVARCHAR(50)   NOT NULL,   -- Critical / High / Medium / Low
+    Description   NVARCHAR(2000) NULL,
+    ReportedBy    NVARCHAR(200)  NULL,
+    EntryDate     DATETIME       NOT NULL DEFAULT GETDATE(),
+    CONSTRAINT FK_ManualQA_Projects FOREIGN KEY (ProjectId) REFERENCES Projects(Id)
+);
+GO
+
+-- ============================================================
+-- ADDED: 2026-02-25
+-- INDEXES for new tables
+-- ============================================================
+CREATE INDEX IX_QGConditions_SnapshotId  ON QualityGateConditions(SnapshotId);
+CREATE INDEX IX_ManualQA_ProjectId       ON ManualQAEntries(ProjectId);
 GO

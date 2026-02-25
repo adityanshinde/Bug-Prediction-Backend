@@ -17,12 +17,14 @@
 6. [GET /api/projects/{id}/risk-analysis](#6-get-apiprojectsidrisk-analysis)
 7. [GET /api/projects/{id}/quality-gates](#7-get-apiprojectsidquality-gates)
 8. [GET /api/projects/{id}/scan-history](#8-get-apiprojectsidscan-history)
-9. [POST /api/sync/{projectKey}](#9-post-apisyncprojectkey)
-10. [POST /api/sync/all](#10-post-apisyncall)
-11. [HTTP Status Codes](#11-http-status-codes)
-12. [TypeScript Interface Definitions](#12-typescript-interface-definitions)
-13. [Angular Service – Ready to Use](#13-angular-service--ready-to-use)
-14. [Field Reference – All DTOs](#14-field-reference--all-dtos)
+9. [GET /api/projects/{id}/qa-entries](#9-get-apiprojectsidqa-entries)
+10. [POST /api/projects/{id}/qa-entries](#10-post-apiprojectsidqa-entries)
+11. [POST /api/sync/{projectKey}](#11-post-apisyncprojectkey)
+12. [POST /api/sync/all](#12-post-apisyncall)
+13. [HTTP Status Codes](#13-http-status-codes)
+14. [TypeScript Interface Definitions](#14-typescript-interface-definitions)
+15. [Angular Service – Ready to Use](#15-angular-service--ready-to-use)
+16. [Field Reference – All DTOs](#16-field-reference--all-dtos)
 
 ---
 
@@ -37,6 +39,8 @@
 | `GET` | `/api/projects/{id}/risk-analysis` | Risk Analysis page | `RiskAnalysisDto` |
 | `GET` | `/api/projects/{id}/quality-gates` | Quality Gates page | `QualityGateDto` |
 | `GET` | `/api/projects/{id}/scan-history` | Scan History page | `ScanHistoryDto[]` |
+| `GET` | `/api/projects/{id}/qa-entries` | QA Analysis page – load entries + summary | `QASummaryDto` |
+| `POST` | `/api/projects/{id}/qa-entries` | QA Analysis page – submit form | `QAEntryResponseDto` |
 | `POST` | `/api/sync/{projectKey}` | Sync button (optional) | `{ message: string }` |
 | `POST` | `/api/sync/all` | Admin sync all (optional) | `{ message: string }` |
 
@@ -227,6 +231,8 @@ GET /api/projects/1/dashboard
 **Page:** Metrics
 **Purpose:** KPI summary cards, coverage trend line chart, bugs vs vulnerabilities bar chart, and module metrics table.
 
+> ?? **QA Form Tip:** Use `moduleMetrics[].moduleName` to populate the module dropdown on the QA Analysis form. No extra API call needed.
+
 ### Request
 ```
 GET /api/projects/1/metrics
@@ -296,7 +302,7 @@ GET /api/projects/1/metrics
 
 | JSON Field | Type | Nullable | Description |
 |------------|------|----------|-------------|
-| `moduleName` | `string` | ? | File or directory path e.g. `"test/unit/adapters"` |
+| `moduleName` | `string` | ? | File or directory path e.g. `"test/unit/adapters"` — use for QA form dropdown |
 | `qualifier` | `string` | ? | `"DIR"` = directory · `"FIL"` = individual file |
 | `language` | `string` | ? | Programming language e.g. `"js"`, `"ts"`, `"py"` — null for directories |
 | `bugs` | `number` | ? | Bug count for this module |
@@ -384,7 +390,9 @@ GET /api/projects/1/risk-analysis
 ## 7. GET /api/projects/{id}/quality-gates
 
 **Page:** Quality Gates
-**Purpose:** Current gate pass/fail status, condition breakdown table, and historical gate change timeline.
+**Purpose:** Current gate pass/fail status, **real per-condition breakdown** (fixed — no longer empty), and historical gate change timeline.
+
+> ? **Fixed (2026-02-25):** `gateConditions` now returns real data from SonarCloud. Each condition shows the metric, threshold, actual value, and PASS/FAIL status.
 
 ### Request
 ```
@@ -396,7 +404,38 @@ GET /api/projects/1/quality-gates
 ```json
 {
   "currentStatus": "FAIL",
-  "gateConditions": [],
+  "gateConditions": [
+    {
+      "metric": "new_security_rating",
+      "condition": "> 1",
+      "actualValue": "5",
+      "status": "FAIL"
+    },
+    {
+      "metric": "new_reliability_rating",
+      "condition": "> 1",
+      "actualValue": "5",
+      "status": "FAIL"
+    },
+    {
+      "metric": "new_coverage",
+      "condition": "< 80",
+      "actualValue": "45.0",
+      "status": "FAIL"
+    },
+    {
+      "metric": "new_duplicated_lines_density",
+      "condition": "> 3",
+      "actualValue": "3.7",
+      "status": "FAIL"
+    },
+    {
+      "metric": "new_maintainability_rating",
+      "condition": "> 1",
+      "actualValue": "1",
+      "status": "PASS"
+    }
+  ],
   "history": [
     {
       "date": "2026-02-24T11:55:19",
@@ -419,19 +458,19 @@ GET /api/projects/1/quality-gates
 | JSON Field | Type | Nullable | Description |
 |------------|------|----------|-------------|
 | `currentStatus` | `string` | ? | `"PASS"` or `"FAIL"` — current gate result from latest snapshot |
-| `gateConditions` | `array` | ? | Condition-level breakdown — currently empty, reserved for future |
+| `gateConditions` | `array` | ? | ? Now populated — per-condition breakdown from latest snapshot |
 | `history` | `array` | ? | Gate status per scan — sorted latest first |
 
 ### Field Reference – `gateConditions[]`
 
-> Currently returns `[]`. Reserved for future condition-level detail.
-
 | JSON Field | Type | Nullable | Description |
 |------------|------|----------|-------------|
-| `metric` | `string` | ? | Metric key e.g. `"coverage"`, `"new_security_rating"` |
-| `condition` | `string` | ? | Human-readable threshold e.g. `"> 70%"` |
-| `actualValue` | `string` | ? | Actual current value |
-| `status` | `string` | ? | `"PASS"` or `"FAIL"` for this condition |
+| `metric` | `string` | ? | Metric key from SonarCloud e.g. `"new_coverage"`, `"new_security_rating"` |
+| `condition` | `string` | ? | Human-readable threshold e.g. `"> 1"`, `"< 80"` |
+| `actualValue` | `string` | ? | Actual value at time of scan e.g. `"45.0"` |
+| `status` | `string` | ? | `"PASS"` or `"FAIL"` for this specific condition |
+
+> **UI Tip:** Show a red row for `"FAIL"` conditions and a green row for `"PASS"` conditions in the conditions table.
 
 ### Field Reference – `history[]`
 
@@ -468,17 +507,6 @@ GET /api/projects/1/scan-history
     "codeSmells": 713,
     "coverage": 45.00,
     "duplication": 3.70
-  },
-  {
-    "scanDate": "2026-02-24T10:22:29",
-    "branch": "v1.x",
-    "commitId": "31b1865ede1a735f774605e145b2d1d236e33ddf",
-    "qualityGateStatus": "FAIL",
-    "bugs": 29,
-    "vulnerabilities": 11,
-    "codeSmells": 713,
-    "coverage": 45.00,
-    "duplication": 3.70
   }
 ]
 ```
@@ -499,7 +527,149 @@ GET /api/projects/1/scan-history
 
 ---
 
-## 9. POST /api/sync/{projectKey}
+## 9. GET /api/projects/{id}/qa-entries
+
+**Page:** QA Analysis
+**Purpose:** Load the QA summary cards (counts by type and severity) and the full list of all manually submitted QA entries for this project.
+
+### Request
+```
+GET /api/projects/1/qa-entries
+```
+No body. No parameters.
+
+### Response – `QASummaryDto`
+
+```json
+{
+  "totalEntries": 5,
+  "bugEntries": 3,
+  "vulnerabilityEntries": 1,
+  "codeSmellEntries": 1,
+  "criticalCount": 2,
+  "highCount": 1,
+  "mediumCount": 1,
+  "lowCount": 1,
+  "entries": [
+    {
+      "id": 3,
+      "projectId": 1,
+      "moduleName": "test/unit/adapters",
+      "issueType": "Bug",
+      "severity": "Critical",
+      "description": "Null pointer in adapter factory",
+      "reportedBy": "Aditya",
+      "entryDate": "2026-02-25T10:30:00"
+    },
+    {
+      "id": 2,
+      "projectId": 1,
+      "moduleName": "examples",
+      "issueType": "Vulnerability",
+      "severity": "High",
+      "description": "Insecure dependency injection",
+      "reportedBy": "Aditya",
+      "entryDate": "2026-02-25T09:15:00"
+    }
+  ]
+}
+```
+
+### Field Reference – root (summary counts)
+
+| JSON Field | Type | Nullable | Description |
+|------------|------|----------|-------------|
+| `totalEntries` | `number` | ? | Total manual QA entries submitted for this project |
+| `bugEntries` | `number` | ? | Count of entries with `issueType = "Bug"` |
+| `vulnerabilityEntries` | `number` | ? | Count of entries with `issueType = "Vulnerability"` |
+| `codeSmellEntries` | `number` | ? | Count of entries with `issueType = "Code Smell"` |
+| `criticalCount` | `number` | ? | Count of entries with `severity = "Critical"` |
+| `highCount` | `number` | ? | Count of entries with `severity = "High"` |
+| `mediumCount` | `number` | ? | Count of entries with `severity = "Medium"` |
+| `lowCount` | `number` | ? | Count of entries with `severity = "Low"` |
+| `entries` | `array` | ? | Full list of entries — sorted latest first |
+
+### Field Reference – `entries[]`
+
+| JSON Field | Type | Nullable | Description |
+|------------|------|----------|-------------|
+| `id` | `number` | ? | Auto-generated entry ID |
+| `projectId` | `number` | ? | Project this entry belongs to |
+| `moduleName` | `string` | ? | Module/file the issue was found in |
+| `issueType` | `string` | ? | `"Bug"` · `"Vulnerability"` · `"Code Smell"` |
+| `severity` | `string` | ? | `"Critical"` · `"High"` · `"Medium"` · `"Low"` |
+| `description` | `string` | ? | Optional description of the issue |
+| `reportedBy` | `string` | ? | Who submitted this entry |
+| `entryDate` | `string (ISO datetime)` | ? | When the entry was submitted |
+
+---
+
+## 10. POST /api/projects/{id}/qa-entries
+
+**Page:** QA Analysis
+**Purpose:** Submit a manual QA entry from the QA analysis form.
+
+### Request
+```
+POST /api/projects/1/qa-entries
+Content-Type: application/json
+```
+
+### Request Body – `QAEntryRequestDto`
+
+```json
+{
+  "moduleName": "test/unit/adapters",
+  "issueType": "Bug",
+  "severity": "Critical",
+  "description": "Null pointer in adapter factory",
+  "reportedBy": "Aditya"
+}
+```
+
+### Request Body Field Reference
+
+| JSON Field | Type | Required | Allowed Values | Description |
+|------------|------|----------|---------------|-------------|
+| `moduleName` | `string` | ? | Any module name from `metrics.moduleMetrics[].moduleName` | Module the issue was found in |
+| `issueType` | `string` | ? | `"Bug"` · `"Vulnerability"` · `"Code Smell"` | Type of issue |
+| `severity` | `string` | ? | `"Critical"` · `"High"` · `"Medium"` · `"Low"` | Severity level |
+| `description` | `string` | ? | Any text | Optional free-text description |
+| `reportedBy` | `string` | ? | Any text | Optional — name of the person submitting |
+
+### Response – `QAEntryResponseDto`
+
+```json
+{
+  "id": 4,
+  "projectId": 1,
+  "moduleName": "test/unit/adapters",
+  "issueType": "Bug",
+  "severity": "Critical",
+  "description": "Null pointer in adapter factory",
+  "reportedBy": "Aditya",
+  "entryDate": "2026-02-25T10:30:00"
+}
+```
+
+### Response Field Reference
+
+| JSON Field | Type | Nullable | Description |
+|------------|------|----------|-------------|
+| `id` | `number` | ? | Auto-generated ID of the new entry |
+| `projectId` | `number` | ? | Project ID the entry was saved under |
+| `moduleName` | `string` | ? | Module name as submitted |
+| `issueType` | `string` | ? | Issue type as submitted |
+| `severity` | `string` | ? | Severity as submitted |
+| `description` | `string` | ? | Description as submitted |
+| `reportedBy` | `string` | ? | Reporter name as submitted |
+| `entryDate` | `string (ISO datetime)` | ? | Server timestamp when entry was saved |
+
+> **UI Tip:** After a successful POST, call `GET /api/projects/{id}/qa-entries` to refresh the summary and entries table.
+
+---
+
+## 11. POST /api/sync/{projectKey}
 
 **Purpose:** Manually trigger a sync for one specific project from SonarCloud into the database.
 
@@ -520,7 +690,7 @@ No body. No parameters.
 
 ---
 
-## 10. POST /api/sync/all
+## 12. POST /api/sync/all
 
 **Purpose:** Manually trigger a full sync for all projects in the organization.
 
@@ -541,7 +711,7 @@ No body. No parameters.
 
 ---
 
-## 11. HTTP Status Codes
+## 13. HTTP Status Codes
 
 | Code | When it happens | What to do in Angular |
 |------|-----------------|-----------------------|
@@ -563,7 +733,7 @@ or
 
 ---
 
-## 12. TypeScript Interface Definitions
+## 14. TypeScript Interface Definitions
 
 Copy-paste ready interfaces for Angular. All field names match the JSON exactly.
 
@@ -575,14 +745,14 @@ export interface ProjectListDto {
   name: string;
   organization: string | null;
   visibility: string | null;
-  lastScanDate: string | null;   // ISO datetime string
+  lastScanDate: string | null;
 }
 
 // ?? /api/projects/{id}/header ?????????????????????????????????
 export interface HeaderDto {
   projectName: string;
   branch: string;
-  lastScanDate: string | null;   // ISO datetime string
+  lastScanDate: string | null;
   qualityGateStatus: string;     // "PASS" | "FAIL"
   commitId: string | null;
 }
@@ -622,7 +792,7 @@ export interface SeverityDistributionDto {
 }
 
 export interface RecentScanDto {
-  scanDate: string;        // ISO datetime string
+  scanDate: string;
   branch: string | null;
   commit: string | null;
   qualityGate: string | null;  // "PASS" | "FAIL"
@@ -644,20 +814,20 @@ export interface MetricsKpisDto {
 }
 
 export interface CoverageTrendPointDto {
-  date: string;      // ISO datetime string – X axis
-  coverage: number;  // decimal – Y axis
+  date: string;
+  coverage: number;
 }
 
 export interface BugsVsVulnerabilitiesPointDto {
-  date: string;            // ISO datetime string – X axis
+  date: string;
   bugs: number;
   vulnerabilities: number;
 }
 
 export interface ModuleMetricDto {
-  moduleName: string;
+  moduleName: string;      // also use for QA form module dropdown
   qualifier: string | null;   // "DIR" | "FIL"
-  language: string | null;    // "js" | "ts" | "py" | null
+  language: string | null;
   bugs: number;
   vulnerabilities: number;
   codeSmells: number;
@@ -695,20 +865,20 @@ export interface HighRiskModuleDto {
 
 // ?? /api/projects/{id}/quality-gates ??????????????????????????
 export interface QualityGateDto {
-  currentStatus: string;               // "PASS" | "FAIL"
-  gateConditions: QualityGateConditionDto[];
+  currentStatus: string;                  // "PASS" | "FAIL"
+  gateConditions: QualityGateConditionDto[]; // ? now populated with real data
   history: QualityGateHistoryDto[];
 }
 
 export interface QualityGateConditionDto {
-  metric: string;
-  condition: string | null;
-  actualValue: string | null;
-  status: string;   // "PASS" | "FAIL"
+  metric: string;             // e.g. "new_coverage", "new_security_rating"
+  condition: string | null;   // e.g. "> 1", "< 80"
+  actualValue: string | null; // e.g. "45.0"
+  status: string;             // "PASS" | "FAIL"
 }
 
 export interface QualityGateHistoryDto {
-  date: string;          // ISO datetime string
+  date: string;
   branch: string | null;
   status: string | null; // "PASS" | "FAIL"
   commitId: string | null;
@@ -716,7 +886,7 @@ export interface QualityGateHistoryDto {
 
 // ?? /api/projects/{id}/scan-history ???????????????????????????
 export interface ScanHistoryDto {
-  scanDate: string;              // ISO datetime string
+  scanDate: string;
   branch: string | null;
   commitId: string | null;
   qualityGateStatus: string | null;  // "PASS" | "FAIL"
@@ -726,19 +896,53 @@ export interface ScanHistoryDto {
   coverage: number;
   duplication: number;
 }
+
+// ?? /api/projects/{id}/qa-entries (GET) ???????????????????????
+export interface QASummaryDto {
+  totalEntries: number;
+  bugEntries: number;
+  vulnerabilityEntries: number;
+  codeSmellEntries: number;
+  criticalCount: number;
+  highCount: number;
+  mediumCount: number;
+  lowCount: number;
+  entries: QAEntryResponseDto[];
+}
+
+export interface QAEntryResponseDto {
+  id: number;
+  projectId: number;
+  moduleName: string;
+  issueType: string;    // "Bug" | "Vulnerability" | "Code Smell"
+  severity: string;     // "Critical" | "High" | "Medium" | "Low"
+  description: string | null;
+  reportedBy: string | null;
+  entryDate: string;    // ISO datetime string
+}
+
+// ?? /api/projects/{id}/qa-entries (POST body) ?????????????????
+export interface QAEntryRequestDto {
+  moduleName: string;   // from metrics.moduleMetrics[].moduleName
+  issueType: string;    // "Bug" | "Vulnerability" | "Code Smell"
+  severity: string;     // "Critical" | "High" | "Medium" | "Low"
+  description?: string;
+  reportedBy?: string;
+}
 ```
 
 ---
 
-## 13. Angular Service – Ready to Use
+## 15. Angular Service – Ready to Use
 
 ```typescript
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
-  ProjectListDto, HeaderDto, DashboardDto,
-  MetricsDto, RiskAnalysisDto, QualityGateDto, ScanHistoryDto
+  ProjectListDto, HeaderDto, DashboardDto, MetricsDto,
+  RiskAnalysisDto, QualityGateDto, ScanHistoryDto,
+  QASummaryDto, QAEntryRequestDto, QAEntryResponseDto
 } from './models/api.models'; // adjust import path as needed
 
 @Injectable({ providedIn: 'root' })
@@ -783,6 +987,19 @@ export class ApiService {
     return this.http.get<ScanHistoryDto[]>(`${this.base}/api/projects/${projectId}/scan-history`);
   }
 
+  // ?? QA Analysis – Load summary + entries ?????????????????????
+  getQAEntries(projectId: number): Observable<QASummaryDto> {
+    return this.http.get<QASummaryDto>(`${this.base}/api/projects/${projectId}/qa-entries`);
+  }
+
+  // ?? QA Analysis – Submit form entry ??????????????????????????
+  submitQAEntry(projectId: number, entry: QAEntryRequestDto): Observable<QAEntryResponseDto> {
+    return this.http.post<QAEntryResponseDto>(
+      `${this.base}/api/projects/${projectId}/qa-entries`,
+      entry
+    );
+  }
+
   // ?? Manual Sync (optional) ???????????????????????????????????
   syncProject(projectKey: string): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(`${this.base}/api/sync/${projectKey}`, {});
@@ -796,9 +1013,7 @@ export class ApiService {
 
 ---
 
-## 14. Field Reference – All DTOs
-
-Quick lookup table for every field across every DTO.
+## 16. Field Reference – All DTOs
 
 ### Rating Values (SonarCloud Scale)
 Used in `securityRating`, `reliabilityRating`, `maintainabilityRating`:
@@ -827,6 +1042,25 @@ Used in `qualifier` field of module-level responses:
 | `"DIR"` | A directory / folder |
 | `"FIL"` | An individual source file |
 
+### QA Issue Type Values
+Used in `issueType` field (POST body and GET response):
+
+| Value | Meaning |
+|-------|---------|
+| `"Bug"` | A reliability defect |
+| `"Vulnerability"` | A security defect |
+| `"Code Smell"` | A maintainability issue |
+
+### QA Severity Values
+Used in `severity` field (POST body and GET response):
+
+| Value | Meaning |
+|-------|---------|
+| `"Critical"` | Highest priority |
+| `"High"` | High priority |
+| `"Medium"` | Medium priority |
+| `"Low"` | Low priority |
+
 ### Decimal Fields
 `coverage` and `duplication` are returned as decimals:
 - `45.00` means **45%**
@@ -839,4 +1073,12 @@ Always guard against null in Angular templates:
 ```html
 {{ item.branch ?? 'N/A' }}
 {{ item.lastScanDate | date:'mediumDate' }}
+{{ item.description ?? '—' }}
 ```
+
+### QA Module Dropdown – How to Load
+Do NOT hardcode the module list. Load it from the Metrics API:
+```typescript
+this.apiService.getMetrics(projectId).subscribe(data => {
+  this.moduleOptions = data.moduleMetrics.map(m => m.moduleName);
+});

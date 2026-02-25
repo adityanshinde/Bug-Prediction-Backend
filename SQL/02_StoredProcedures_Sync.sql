@@ -172,3 +172,50 @@ BEGIN
     VALUES (@SnapshotId, @Blocker, @Critical, @Major, @Minor, @Info);
 END
 GO
+
+-- ============================================================
+-- ADDED: 2026-02-25
+-- SP: sp_InsertQualityGateCondition
+-- ============================================================
+CREATE PROCEDURE sp_InsertQualityGateCondition
+    @SnapshotId     INT,
+    @MetricKey      NVARCHAR(100),
+    @Comparator     NVARCHAR(10),
+    @ErrorThreshold NVARCHAR(50),
+    @ActualValue    NVARCHAR(50),
+    @Status         NVARCHAR(10)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO QualityGateConditions
+        (SnapshotId, MetricKey, Comparator, ErrorThreshold, ActualValue, Status)
+    VALUES
+        (@SnapshotId, @MetricKey, @Comparator, @ErrorThreshold, @ActualValue, @Status);
+END
+GO
+
+-- ============================================================
+-- ADDED: 2026-02-25
+-- SP: sp_InsertManualQAEntry
+-- Returns: New entry Id (INT)
+-- ============================================================
+CREATE PROCEDURE sp_InsertManualQAEntry
+    @ProjectId   INT,
+    @ModuleName  NVARCHAR(500),
+    @IssueType   NVARCHAR(100),
+    @Severity    NVARCHAR(50),
+    @Description NVARCHAR(2000),
+    @ReportedBy  NVARCHAR(200)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO ManualQAEntries
+        (ProjectId, ModuleName, IssueType, Severity, Description, ReportedBy)
+    VALUES
+        (@ProjectId, @ModuleName, @IssueType, @Severity, @Description, @ReportedBy);
+
+    SELECT CAST(SCOPE_IDENTITY() AS INT) AS Id;
+END
+GO

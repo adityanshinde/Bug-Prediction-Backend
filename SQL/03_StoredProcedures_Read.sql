@@ -257,3 +257,81 @@ BEGIN
     ORDER BY ScanDate DESC;
 END
 GO
+
+-- ============================================================
+-- ADDED: 2026-02-25
+-- SP: sp_GetConditionsBySnapshot
+-- Used by: QualityGateService (gateConditions array)
+-- ============================================================
+CREATE PROCEDURE sp_GetConditionsBySnapshot
+    @SnapshotId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        MetricKey,
+        Comparator,
+        ErrorThreshold,
+        ActualValue,
+        Status
+    FROM QualityGateConditions
+    WHERE SnapshotId = @SnapshotId
+    ORDER BY
+        CASE Status WHEN 'ERROR' THEN 0 ELSE 1 END ASC,
+        MetricKey ASC;
+END
+GO
+
+-- ============================================================
+-- ADDED: 2026-02-25
+-- SP: sp_GetManualQAEntries
+-- Used by: GET /api/projects/{id}/qa-entries
+-- ============================================================
+CREATE PROCEDURE sp_GetManualQAEntries
+    @ProjectId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        Id,
+        ProjectId,
+        ModuleName,
+        IssueType,
+        Severity,
+        Description,
+        ReportedBy,
+        EntryDate
+    FROM ManualQAEntries
+    WHERE ProjectId = @ProjectId
+    ORDER BY EntryDate DESC;
+END
+GO
+
+-- ============================================================
+-- ADDED: 2026-02-25
+-- SP: sp_GetQASummary
+-- Used by: GET /api/projects/{id}/qa-entries (summary card counts)
+-- Compares manual QA entries against latest snapshot metrics
+-- ============================================================
+CREATE PROCEDURE sp_GetQASummary
+    @ProjectId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Total manual entries submitted for this project
+    SELECT
+        COUNT(*)                                           AS TotalEntries,
+        SUM(CASE WHEN IssueType = 'Bug'           THEN 1 ELSE 0 END) AS BugEntries,
+        SUM(CASE WHEN IssueType = 'Vulnerability' THEN 1 ELSE 0 END) AS VulnerabilityEntries,
+        SUM(CASE WHEN IssueType = 'Code Smell'    THEN 1 ELSE 0 END) AS CodeSmellEntries,
+        SUM(CASE WHEN Severity  = 'Critical'      THEN 1 ELSE 0 END) AS CriticalCount,
+        SUM(CASE WHEN Severity  = 'High'          THEN 1 ELSE 0 END) AS HighCount,
+        SUM(CASE WHEN Severity  = 'Medium'        THEN 1 ELSE 0 END) AS MediumCount,
+        SUM(CASE WHEN Severity  = 'Low'           THEN 1 ELSE 0 END) AS LowCount
+    FROM ManualQAEntries
+    WHERE ProjectId = @ProjectId;
+END
+GO
