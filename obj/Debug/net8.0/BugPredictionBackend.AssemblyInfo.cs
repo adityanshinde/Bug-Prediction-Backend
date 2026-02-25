@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BugPredictionBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+588504c34d1189db9a4933167ba7e933ca7262f7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5084c03513a858328a37ca15846bfc518cade14")]
 [assembly: System.Reflection.AssemblyProductAttribute("BugPredictionBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BugPredictionBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
