@@ -1,10 +1,38 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\BugPredictionBackend\\",
+  "WorkspaceRootPath": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bugpredictionbackend\\project docs\\backend-dev-plan.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
-      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:project docs\\backend-dev-plan.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\controllers\\read\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:controllers\\read\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\controllers\\sync\\synccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:controllers\\sync\\synccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\project docs\\project-workflow.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:project docs\\project-workflow.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\controllers\\read\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:controllers\\read\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\controllers\\read\\metricscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:controllers\\read\\metricscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\controllers\\read\\qualitygatescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:controllers\\read\\qualitygatescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|c:\\aditya dev backup\\personal\\bug-prediction-and-code-quality\\bug-prediction-backend\\controllers\\read\\scanhistorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4CC1AB0E-1708-42C4-91F0-DEEE555894C7}|BugPredictionBackend.csproj|solutionrelative:controllers\\read\\scanhistorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,15 +58,106 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "QualityGatesController.cs",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\QualityGatesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Read\\QualityGatesController.cs",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\QualityGatesController.cs",
+              "RelativeToolTip": "Controllers\\Read\\QualityGatesController.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAABUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T07:50:09.789Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MetricsController.cs",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\MetricsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Read\\MetricsController.cs",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\MetricsController.cs",
+              "RelativeToolTip": "Controllers\\Read\\MetricsController.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAABUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T07:50:03.89Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Backend-Dev-Plan.md",
-              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\BugPredictionBackend\\Project Docs\\Backend-Dev-Plan.md",
-              "RelativeDocumentMoniker": "Project Docs\\Backend-Dev-Plan.md",
-              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\BugPredictionBackend\\Project Docs\\Backend-Dev-Plan.md",
-              "RelativeToolTip": "Project Docs\\Backend-Dev-Plan.md",
-              "ViewState": "AgIAAMIDAAAAAAAAAAAAAMgDAAAXAAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAgwFAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T07:49:06.774Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ScanHistoryController.cs",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\ScanHistoryController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Read\\ScanHistoryController.cs",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\ScanHistoryController.cs",
+              "RelativeToolTip": "Controllers\\Read\\ScanHistoryController.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAABUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T07:50:15.492Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\DashboardController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Read\\DashboardController.cs",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\DashboardController.cs",
+              "RelativeToolTip": "Controllers\\Read\\DashboardController.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAABUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T07:49:57.955Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ProjectsController.cs",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\ProjectsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Read\\ProjectsController.cs",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Read\\ProjectsController.cs",
+              "RelativeToolTip": "Controllers\\Read\\ProjectsController.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T07:49:35.726Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SyncController.cs",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Sync\\SyncController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Sync\\SyncController.cs",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Controllers\\Sync\\SyncController.cs",
+              "RelativeToolTip": "Controllers\\Sync\\SyncController.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T07:49:22.218Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Project-WorkFlow.md",
+              "DocumentMoniker": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Project Docs\\Project-WorkFlow.md",
+              "RelativeDocumentMoniker": "Project Docs\\Project-WorkFlow.md",
+              "ToolTip": "C:\\Aditya Dev Backup\\Personal\\Bug-Prediction-And-Code-Quality\\Bug-Prediction-Backend\\Project Docs\\Project-WorkFlow.md",
+              "RelativeToolTip": "Project Docs\\Project-WorkFlow.md",
+              "ViewState": "AgIAALQCAAAAAAAAAAAAAMoCAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-02-24T16:18:47.94Z",
+              "WhenOpened": "2026-02-25T07:45:09.223Z",
               "EditorCaption": ""
             }
           ]

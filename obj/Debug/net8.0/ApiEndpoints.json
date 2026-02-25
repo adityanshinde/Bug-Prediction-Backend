@@ -1,23 +1,161 @@
 [
   {
-    "ContainingType": "BugPredictionBackend.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
+    "ContainingType": "BugPredictionBackend.Controllers.Read.ProjectsController",
+    "Method": "GetAll",
+    "RelativePath": "api/projects",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
+    "ReturnTypes": [],
+    "Tags": [
+      "Database to Frontend"
+    ]
+  },
+  {
+    "ContainingType": "BugPredictionBackend.Controllers.Read.DashboardController",
+    "Method": "GetDashboard",
+    "RelativePath": "api/projects/{projectId}/dashboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[BugPredictionBackend.WeatherForecast, BugPredictionBackend, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
+        "Name": "projectId",
+        "Type": "System.Int32",
+        "IsRequired": true
       }
     ],
-    "EndpointName": "GetWeatherForecast"
+    "ReturnTypes": [],
+    "Tags": [
+      "Database to Frontend"
+    ]
+  },
+  {
+    "ContainingType": "BugPredictionBackend.Controllers.Read.DashboardController",
+    "Method": "GetHeader",
+    "RelativePath": "api/projects/{projectId}/header",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [],
+    "Tags": [
+      "Database to Frontend"
+    ]
+  },
+  {
+    "ContainingType": "BugPredictionBackend.Controllers.Read.MetricsController",
+    "Method": "GetMetrics",
+    "RelativePath": "api/projects/{projectId}/metrics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [],
+    "Tags": [
+      "Database to Frontend"
+    ]
+  },
+  {
+    "ContainingType": "BugPredictionBackend.Controllers.Read.QualityGatesController",
+    "Method": "GetQualityGates",
+    "RelativePath": "api/projects/{projectId}/quality-gates",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [],
+    "Tags": [
+      "Database to Frontend"
+    ]
+  },
+  {
+    "ContainingType": "BugPredictionBackend.Controllers.Read.MetricsController",
+    "Method": "GetRiskAnalysis",
+    "RelativePath": "api/projects/{projectId}/risk-analysis",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [],
+    "Tags": [
+      "Database to Frontend"
+    ]
+  },
+  {
+    "ContainingType": "BugPredictionBackend.Controllers.Read.ScanHistoryController",
+    "Method": "GetScanHistory",
+    "RelativePath": "api/projects/{projectId}/scan-history",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [],
+    "Tags": [
+      "Database to Frontend"
+    ]
+  },
+  {
+    "ContainingType": "BugPredictionBackend.Controllers.Sync.SyncController",
+    "Method": "SyncProject",
+    "RelativePath": "api/sync/{projectKey}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectKey",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [],
+    "Tags": [
+      "Sonar to Database"
+    ]
+  },
+  {
+    "ContainingType": "BugPredictionBackend.Controllers.Sync.SyncController",
+    "Method": "SyncAll",
+    "RelativePath": "api/sync/all",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [],
+    "Tags": [
+      "Sonar to Database"
+    ]
   }
 ]
