@@ -1,0 +1,38 @@
+# Sample Render manifests for deploying this repository.
+# Replace placeholder values and remove resources you don't need.
+
+services:
+  - type: web
+    name: bugprediction-backend
+    env: docker
+    region: oregon            # change to your preferred region
+    branch: main
+    repo: https://github.com/<your-org-or-user>/<your-repo>
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    # Environment variables (do NOT commit secrets here). Set them in Render dashboard or via CLI.
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        value: "Host=<PG_HOST>;Port=5432;Database=<DBNAME>;Username=<USER>;Password=<PASSWORD>;Pooling=true;"
+      - key: SonarSettings__BaseUrl
+        value: "https://sonarcloud.io"
+      - key: SonarSettings__Organization
+        value: "bpcq"
+      - key: ASPNETCORE_ENVIRONMENT
+        value: "Production"
+
+databases:
+  - name: bpcqdb
+    plan: starter
+    engine: postgresql
+    version: "14"
+    # Optional: extensions you may want
+    extensions:
+      - pgcrypto
+
+# Notes:
+# - For secrets (API tokens, DB password) prefer Render Dashboard Secrets rather than storing in this file.
+# - After provisioning the Postgres DB on Render, update the ConnectionStrings__DefaultConnection env var
+#   in the service to point to the managed DB credentials.
+# - Run SQL files in `SQL/` (01_*.sql, 02_*.sql, 03_*.sql) against the Postgres instance to create schema and stored procedures.
+# - You can deploy using Render UI or the Render CLI (render.yaml will be picked up when connecting the repo).
