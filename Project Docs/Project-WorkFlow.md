@@ -39,13 +39,13 @@ The problem is:
 **This backend solves all of that.**
 
 ```
-SonarCloud API  ???  Our .NET Backend  ???  SQL Server DB  ???  Angular Frontend
+SonarCloud API  ???  Our .NET Backend  ???  PostgreSQL DB  ???  Angular Frontend
 ```
 
 This backend acts as a **middleman** that:
 
 1. **Pulls** data from SonarCloud every 6 hours automatically
-2. **Stores** it cleanly in our own SQL Server database
+2. **Stores** it cleanly in our own PostgreSQL database
 3. **Serves** structured, page-ready data to Angular via REST APIs
 
 Angular never talks to SonarCloud. Angular never sees the token.
@@ -80,7 +80,7 @@ Angular only calls our clean backend APIs.
             ?                              ?
             ?                              ?
 ???????????????????????????????????????????????????????????????????
-?                     SQL SERVER (BPCQDB)                         ?
+?                    POSTGRESQL (BPCQDB)                        ?
 ?   Projects | Branches | Snapshots | ModuleMetrics | Severity    ?
 ???????????????????????????????????????????????????????????????????
                                            ?
@@ -421,9 +421,9 @@ Sync Services:    SonarCloud data ? Entity mapping happens here
 
 ```csharp
 // Pattern used in every repository
-using SqlConnection con = new(_connectionString);
-using SqlCommand cmd = new("sp_StoredProcedureName", con);
-cmd.CommandType = CommandType.StoredProcedure;
+using NpgsqlConnection con = new(_connectionString);
+using NpgsqlCommand cmd = new($"SELECT * FROM dbo.sp_storedprocedurename()", con);
+cmd.CommandType = CommandType.Text;
 cmd.Parameters.AddWithValue("@Param", value);
 await con.OpenAsync();
 // execute and map result
@@ -714,7 +714,7 @@ STEP 8 – Angular receives structured data
 > ?? **Golden Rule of This Project:**
 >
 > - **Only `SonarApiClient`** talks to SonarCloud
-> - **Only Repositories** talk to SQL Server
+> - **Only Repositories** talk to PostgreSQL
 > - **Only Services** shape data between layers
 > - **Only Controllers** talk to Angular
 > - Every layer knows only its immediate neighbor — nothing else

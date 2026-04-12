@@ -1,5 +1,5 @@
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Npgsql;
 using BugPredictionBackend.Models.DTOs;
 
 namespace BugPredictionBackend.Repositories.Read;
@@ -10,13 +10,13 @@ public class MetricsReadRepository(IConfiguration configuration)
 
     public async Task<MetricsKpisDto?> GetKpisAsync(int projectId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetMetricsKpis", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ProjectId", projectId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getmetricskpis(@p_projectid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_projectid", projectId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         return await reader.ReadAsync() ? new MetricsKpisDto
         {
@@ -29,13 +29,13 @@ public class MetricsReadRepository(IConfiguration configuration)
 
     public async Task<List<CoverageTrendPointDto>> GetCoverageTrendAsync(int projectId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetCoverageHistory", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ProjectId", projectId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getcoveragehistory(@p_projectid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_projectid", projectId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         List<CoverageTrendPointDto> list = [];
         while (await reader.ReadAsync())
@@ -51,13 +51,13 @@ public class MetricsReadRepository(IConfiguration configuration)
 
     public async Task<List<BugsVsVulnerabilitiesPointDto>> GetBugsVsVulnerabilitiesAsync(int projectId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetBugsVulnerabilitiesHistory", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ProjectId", projectId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getbugsvulnerabilitieshistory(@p_projectid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_projectid", projectId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         List<BugsVsVulnerabilitiesPointDto> list = [];
         while (await reader.ReadAsync())
@@ -72,3 +72,4 @@ public class MetricsReadRepository(IConfiguration configuration)
         return list;
     }
 }
+

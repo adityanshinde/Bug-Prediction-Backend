@@ -27,7 +27,7 @@
 | 17 | Services/Read – 6 read service files              | ? Done  | +QAService; QualityGateService fixed (2026-02-25)      |
 | 18 | Controllers/Sync/SyncController.cs                | ? Done  | POST /api/sync/{projectKey}, POST /api/sync/all        |
 | 19 | Controllers/Read – 6 read controllers             | ? Done  | +QAController (2026-02-25)                             |
-| 20 | Microsoft.Data.SqlClient package added            | ? Done  | v5.2.2                                                 |
+| 20 | Npgsql package added                              | ? Done  | v10.0.2                                                |
 | 21 | QualityGate gateConditions bug fixed              | ? Done  | Was always []. Now reads real conditions from DB       |
 | 22 | Manual QA Entry feature added                     | ? Done  | POST+GET /api/projects/{id}/qa-entries                 |
 | 23 | Build Verification                                | ? Done  | Build successful – 0 errors                            |
@@ -50,7 +50,7 @@
 | POST   | /api/sync/{projectKey}                    | Manual sync one project            |
 | POST   | /api/sync/all                             | Manual sync all projects           |
 
-## ?? SQL Scripts to Run in SSMS (2026-02-25 additions)
+## ?? SQL Scripts to Run in pgAdmin (2026-02-25 additions)
 
 Run these on your existing `BPCQDB` database — do NOT re-run the full files:
 

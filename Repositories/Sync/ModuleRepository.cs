@@ -1,5 +1,5 @@
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Npgsql;
 using BugPredictionBackend.Models.Entities;
 
 namespace BugPredictionBackend.Repositories.Sync;
@@ -10,22 +10,22 @@ public class ModuleRepository(IConfiguration configuration)
 
     public async Task InsertAsync(ModuleMetricEnt entity)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_InsertModuleMetric", con);
-        cmd.CommandType = CommandType.StoredProcedure;
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT dbo.sp_insertmodulemetric(@p_snapshotid, @p_modulename::varchar, @p_qualifier::varchar, @p_path::varchar, @p_language::varchar, @p_bugs, @p_vulnerabilities, @p_codesmells, @p_coverage, @p_duplication, @p_complexity, @p_ncloc)", con);
+        cmd.CommandType = CommandType.Text;
 
-        cmd.Parameters.AddWithValue("@SnapshotId",      entity.SnapshotId);
-        cmd.Parameters.AddWithValue("@ModuleName",      (object?)entity.ModuleName  ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@Qualifier",       (object?)entity.Qualifier   ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@Path",            (object?)entity.Path        ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@Language",        (object?)entity.Language    ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@Bugs",            entity.Bugs);
-        cmd.Parameters.AddWithValue("@Vulnerabilities", entity.Vulnerabilities);
-        cmd.Parameters.AddWithValue("@CodeSmells",      entity.CodeSmells);
-        cmd.Parameters.AddWithValue("@Coverage",        entity.Coverage);
-        cmd.Parameters.AddWithValue("@Duplication",     entity.Duplication);
-        cmd.Parameters.AddWithValue("@Complexity",      entity.Complexity);
-        cmd.Parameters.AddWithValue("@Ncloc",           entity.Ncloc);
+        cmd.Parameters.AddWithValue("@p_snapshotid",      entity.SnapshotId);
+        cmd.Parameters.AddWithValue("@p_modulename",      (object?)entity.ModuleName  ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_qualifier",       (object?)entity.Qualifier   ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_path",            (object?)entity.Path        ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_language",        (object?)entity.Language    ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_bugs",            entity.Bugs);
+        cmd.Parameters.AddWithValue("@p_vulnerabilities", entity.Vulnerabilities);
+        cmd.Parameters.AddWithValue("@p_codesmells",      entity.CodeSmells);
+        cmd.Parameters.AddWithValue("@p_coverage",        entity.Coverage);
+        cmd.Parameters.AddWithValue("@p_duplication",     entity.Duplication);
+        cmd.Parameters.AddWithValue("@p_complexity",      entity.Complexity);
+        cmd.Parameters.AddWithValue("@p_ncloc",           entity.Ncloc);
 
         await con.OpenAsync();
         await cmd.ExecuteNonQueryAsync();
@@ -33,13 +33,13 @@ public class ModuleRepository(IConfiguration configuration)
 
     public async Task<List<ModuleMetricEnt>> GetBySnapshotAsync(int snapshotId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetModulesBySnapshot", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@SnapshotId", snapshotId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getmodulesbysnapshot(@p_snapshotid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_snapshotid", snapshotId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         List<ModuleMetricEnt> modules = [];
         while (await reader.ReadAsync())
@@ -62,6 +62,7 @@ public class ModuleRepository(IConfiguration configuration)
         return modules;
     }
 
-    private static string? r(SqlDataReader reader, string col)
+    private static string? r(NpgsqlDataReader reader, string col)
         => reader.IsDBNull(reader.GetOrdinal(col)) ? null : reader.GetString(reader.GetOrdinal(col));
 }
+

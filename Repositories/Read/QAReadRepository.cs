@@ -1,5 +1,5 @@
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Npgsql;
 using BugPredictionBackend.Models.DTOs;
 using BugPredictionBackend.Models.Entities;
 
@@ -11,13 +11,13 @@ public class QAReadRepository(IConfiguration configuration)
 
     public async Task<List<QualityGateConditionDto>> GetConditionsBySnapshotAsync(int snapshotId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetConditionsBySnapshot", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@SnapshotId", snapshotId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getconditionsbysnapshot(@p_snapshotid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_snapshotid", snapshotId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         List<QualityGateConditionDto> list = [];
         while (await reader.ReadAsync())
@@ -41,13 +41,13 @@ public class QAReadRepository(IConfiguration configuration)
 
     public async Task<List<QAEntryResponseDto>> GetEntriesAsync(int projectId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetManualQAEntries", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ProjectId", projectId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getmanualqaentries(@p_projectid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_projectid", projectId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         List<QAEntryResponseDto> list = [];
         while (await reader.ReadAsync())
@@ -69,13 +69,13 @@ public class QAReadRepository(IConfiguration configuration)
 
     public async Task<QASummaryDto> GetSummaryAsync(int projectId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetQASummary", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ProjectId", projectId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getqasummary(@p_projectid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_projectid", projectId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         QASummaryDto summary = new();
         if (await reader.ReadAsync())
@@ -104,3 +104,4 @@ public class QAReadRepository(IConfiguration configuration)
         };
     }
 }
+

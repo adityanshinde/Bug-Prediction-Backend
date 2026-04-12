@@ -13,7 +13,7 @@ Build a production-grade ASP.NET Core backend that:
 
 1. Authenticates with SonarCloud
 2. Fetches required project data
-3. Normalizes and stores data in SQL Server
+3. Normalizes and stores data in PostgreSQL
 4. Maintains historical snapshots
 5. Exposes structured REST APIs
 6. Does NOT perform risk calculations
@@ -39,7 +39,7 @@ Backend only provides raw structured metrics.
 | --------------- | ----------------------------- |
 | Framework       | ASP.NET Core Web API (.NET 8) |
 | Data Access     | ADO.NET                       |
-| Database        | SQL Server                    |
+| Database        | PostgreSQL                    |
 | HTTP Client     | IHttpClientFactory            |
 | Background Sync | IHostedService                |
 | Logging         | ILogger                       |
@@ -58,7 +58,7 @@ Sync Background Service
        ↓
 Normalization Layer
        ↓
-SQL Server (Historical Snapshots)
+PostgreSQL (Historical Snapshots)
        ↓
 REST Controllers
        ↓
@@ -283,9 +283,9 @@ Important:
 
 Rules:
 
-* Use SqlConnection
-* Use SqlCommand
-* Use Stored Procedures
+* Use NpgsqlConnection
+* Use NpgsqlCommand
+* Use PostgreSQL functions
 * Use parameterized queries
 * No dynamic SQL
 
@@ -424,7 +424,7 @@ Use structured logging.
 # 1️⃣5️⃣ Deployment Preparation
 
 * Add Swagger
-* Add production connection string
+* Add PostgreSQL connection string
 * Configure environment-based settings
 * Add health check endpoint
 * Enable HTTPS redirection
@@ -823,10 +823,12 @@ public class ProjectRepository
 {
     private readonly string _connectionString;
 
+
     public ProjectRepository(IConfiguration config)
     {
         _connectionString = config.GetConnectionString("DefaultConnection");
     }
+
 
     public async Task<int> InsertOrUpdateAsync(ProjectEntity entity)
     {

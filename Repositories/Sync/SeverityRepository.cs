@@ -1,5 +1,5 @@
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Npgsql;
 using BugPredictionBackend.Models.Entities;
 
 namespace BugPredictionBackend.Repositories.Sync;
@@ -10,16 +10,16 @@ public class SeverityRepository(IConfiguration configuration)
 
     public async Task InsertAsync(SeverityDistributionEnt entity)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_InsertSeverityDistribution", con);
-        cmd.CommandType = CommandType.StoredProcedure;
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT dbo.sp_insertseveritydistribution(@p_snapshotid, @p_blocker, @p_critical, @p_major, @p_minor, @p_info)", con);
+        cmd.CommandType = CommandType.Text;
 
-        cmd.Parameters.AddWithValue("@SnapshotId", entity.SnapshotId);
-        cmd.Parameters.AddWithValue("@Blocker",    entity.Blocker);
-        cmd.Parameters.AddWithValue("@Critical",   entity.Critical);
-        cmd.Parameters.AddWithValue("@Major",      entity.Major);
-        cmd.Parameters.AddWithValue("@Minor",      entity.Minor);
-        cmd.Parameters.AddWithValue("@Info",       entity.Info);
+        cmd.Parameters.AddWithValue("@p_snapshotid", entity.SnapshotId);
+        cmd.Parameters.AddWithValue("@p_blocker",    entity.Blocker);
+        cmd.Parameters.AddWithValue("@p_critical",   entity.Critical);
+        cmd.Parameters.AddWithValue("@p_major",      entity.Major);
+        cmd.Parameters.AddWithValue("@p_minor",      entity.Minor);
+        cmd.Parameters.AddWithValue("@p_info",       entity.Info);
 
         await con.OpenAsync();
         await cmd.ExecuteNonQueryAsync();
@@ -27,13 +27,13 @@ public class SeverityRepository(IConfiguration configuration)
 
     public async Task<SeverityDistributionEnt?> GetBySnapshotAsync(int snapshotId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetSeverityBySnapshot", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@SnapshotId", snapshotId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getseveritybysnapshot(@p_snapshotid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_snapshotid", snapshotId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         return await reader.ReadAsync() ? new SeverityDistributionEnt
         {
@@ -46,3 +46,4 @@ public class SeverityRepository(IConfiguration configuration)
         } : null;
     }
 }
+

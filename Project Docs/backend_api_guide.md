@@ -387,7 +387,7 @@ Now tell me:
 1. Single organization or multiple org support?
 2. Multi-user login required?
 3. Real-time sync button or scheduled only?
-4. SQL Server or PostgreSQL?
+4. PostgreSQL?
 
 Next step I can:
 

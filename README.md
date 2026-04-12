@@ -1,6 +1,6 @@
 # ?? BugPredictionBackend
 
-> A production-grade ASP.NET Core 8 backend that pulls data from **SonarCloud**, stores it in **SQL Server**, and exposes clean **REST APIs** for an Angular analytics dashboard.
+> A production-grade ASP.NET Core 8 backend that pulls data from **SonarCloud**, stores it in **PostgreSQL**, and exposes clean **REST APIs** for an Angular analytics dashboard.
 
 ---
 
@@ -10,12 +10,12 @@ SonarCloud gives you raw code quality metrics — bugs, vulnerabilities, code smel
 
 This backend solves that by acting as a **secure data aggregation layer**:
 
-1. **Syncs** SonarCloud data into a local SQL Server database every 6 hours
+1. **Syncs** SonarCloud data into a local PostgreSQL database every 6 hours
 2. **Stores** full historical snapshots — every scan is preserved
 3. **Serves** structured, page-ready REST APIs to the Angular frontend
 
 ```
-SonarCloud API  ???  .NET 8 Backend  ???  SQL Server (BPCQDB)  ???  Angular Frontend
+SonarCloud API  ???  .NET 8 Backend  ???  PostgreSQL (BPCQDB)  ???  Angular Frontend
 ```
 
 Angular **never** calls SonarCloud. The token is **never** exposed to the browser.
@@ -27,7 +27,7 @@ Angular **never** calls SonarCloud. The token is **never** exposed to the browse
 | Layer | Technology |
 |-------|-----------|
 | Framework | ASP.NET Core 8 Web API |
-| Database | SQL Server 2022 |
+| Database | Neon PostgreSQL |
 | Data Access | Pure ADO.NET (no Entity Framework) |
 | HTTP Client | `IHttpClientFactory` |
 | Background Sync | `IHostedService` |
@@ -45,15 +45,15 @@ SonarCloud API (External - Bearer Token)
        ?
 .NET 8 Backend (This Project)
   ????????????????????   ???????????????????????
-  ?  SYNC WORKFLOW   ?   ?   READ WORKFLOW      ?
-  ?  SonarApiClient  ?   ?   Controllers        ?
-  ?       ?          ?   ?       ?              ?
-  ?  SyncService     ?   ?   Services           ?
-  ?       ?          ?   ?       ?              ?
-  ?  Repositories    ?   ?   Repositories       ?
+  ?  SYNC WORKFLOW   ?   ?   READ WORKFLOW      ?   ?
+  ?  SonarApiClient  ?   ?   Controllers        ?   ?
+  ?       ?          ?   ?       ?              ?   ?
+  ?  SyncService     ?   ?   Services           ?   ?
+  ?       ?          ?   ?       ?              ?   ?
+  ?  Repositories    ?   ?   Repositories       ?   ?
   ????????????????????   ????????????????????????
            ?                        ?
-     SQL Server · BPCQDB
+     PostgreSQL · BPCQDB
      Projects · Branches · Snapshots
      ModuleMetrics · SeverityDistribution
      QualityGateConditions · ManualQAEntries
@@ -78,8 +78,8 @@ Make sure you have all of these installed before starting:
 | Tool | Version | Download |
 |------|---------|----------|
 | .NET SDK | 8.0 or later | https://dotnet.microsoft.com/download/dotnet/8.0 |
-| SQL Server | 2022 (Express is fine) | https://www.microsoft.com/en-us/sql-server/sql-server-downloads |
-| SSMS | Latest | https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms |
+| PostgreSQL | Neon PostgreSQL or any compatible PostgreSQL instance | https://neon.tech |
+| pgAdmin | Latest | https://www.pgadmin.org/download/ |
 | Git | Any | https://git-scm.com/downloads |
 | Visual Studio | 2022 (or VS Code) | https://visualstudio.microsoft.com/ |
 
@@ -96,11 +96,11 @@ cd Bug-Prediction-Backend
 
 ---
 
-### Step 3 — Set Up the Database in SSMS
+### Step 3 — Set Up the Database in pgAdmin
 
 > ?? Run the scripts **in exact order**. Each script depends on the previous one.
 
-1. Open **SSMS** and connect to your SQL Server instance (usually `localhost` or `.\SQLEXPRESS`)
+1. Open **pgAdmin** and connect to your PostgreSQL instance (usually your Neon host or local PostgreSQL instance)
 2. Open each file from the `SQL/` folder and execute them one by one:
 
 | Order | File | What it does |
@@ -109,12 +109,12 @@ cd Bug-Prediction-Backend
 | 2nd | `SQL/02_StoredProcedures_Sync.sql` | Creates stored procedures for Sonar ? DB write operations |
 | 3rd | `SQL/03_StoredProcedures_Read.sql` | Creates stored procedures for DB ? Frontend read APIs |
 
-**How to run a script in SSMS:**
-- `File ? Open ? File` ? select the `.sql` file
+**How to run a script in pgAdmin:**
+- Use the Query Tool to open the `.sql` file
 - Click **Execute** (or press `F5`)
-- You should see `Command(s) completed successfully`
+- You should see the script complete successfully
 
-**Verify in SSMS Object Explorer after all 3 scripts:**
+**Verify in pgAdmin after all 3 scripts:**
 ```
 BPCQDB
   ??? Tables
@@ -162,7 +162,7 @@ Open `appsettings.json` in the project root. Set your **Organization key** and *
   },
   "AllowedHosts": "*",
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=BPCQDB;Trusted_Connection=True;TrustServerCertificate=True;"
+    "DefaultConnection": "Host=your-neon-host;Database=bpcqdb;Username=your_username;Password=your_password;SSL Mode=Require;"
   },
   "SonarSettings": {
     "BaseUrl": "https://sonarcloud.io",
@@ -181,12 +181,12 @@ Open `appsettings.json` in the project root. Set your **Organization key** and *
 
 **Connection string reference:**
 
-| Your SQL Server setup | Connection string value |
+| Your PostgreSQL setup | Connection string value |
 |----------------------|------------------------|
-| Default local install | `Server=localhost;Database=BPCQDB;Trusted_Connection=True;TrustServerCertificate=True;` |
-| SQL Server Express | `Server=.\SQLEXPRESS;Database=BPCQDB;Trusted_Connection=True;TrustServerCertificate=True;` |
-| Named instance | `Server=localhost\INSTANCENAME;Database=BPCQDB;Trusted_Connection=True;TrustServerCertificate=True;` |
-| SQL login (username + password) | `Server=localhost;Database=BPCQDB;User Id=sa;Password=yourpassword;TrustServerCertificate=True;` |
+| Local PostgreSQL | `Host=localhost;Database=bpcqdb;Username=postgres;Password=yourpassword;SSL Mode=Require;` |
+| Neon PostgreSQL | `Host=your-neon-host;Database=bpcqdb;Username=your_username;Password=your_password;SSL Mode=Require;` |
+| Managed PostgreSQL instance | `Host=your-neon-host;Database=bpcqdb;Username=your_username;Password=your_password;SSL Mode=Require;` |
+| PostgreSQL login (username + password) | `Host=localhost;Database=bpcqdb;Username=postgres;Password=yourpassword;SSL Mode=Require;` |
 
 ---
 
@@ -355,7 +355,7 @@ You will see two groups of endpoints:
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
-| `Cannot open database BPCQDB` | DB not created yet | Run Step 3 SQL scripts in SSMS first |
+| `Cannot open database BPCQDB` | DB not created yet | Run Step 3 SQL scripts in pgAdmin first |
 | `401 Unauthorized` from SonarCloud | Token wrong or expired | Regenerate token in SonarCloud ? update `secrets.json` |
 | `404` from SonarCloud during sync | Wrong org key | Check `Organization` in `appsettings.json` — must match SonarCloud exactly |
 | `/api/projects` returns empty `[]` | Sync failed or hasn't run | Check console logs for sync error messages |
@@ -452,7 +452,7 @@ BugPredictionBackend/
 ?   ??? Entities/             ? DB table row representations
 ?   ??? Sonar/                ? SonarCloud JSON response models
 ?   ??? DTOs/                 ? Angular-facing response shapes
-??? SQL/                      ? All database scripts (run these in SSMS)
+??? SQL/                      ? All database scripts (run these in pgAdmin)
 ??? Project Docs/             ? Architecture docs and API guides
 ??? appsettings.json          ? Config (Token is empty — safe to commit)
 ??? secrets.json              ? YOUR TOKEN HERE (gitignored — create manually)
@@ -495,7 +495,7 @@ For each project, the sync:
 | Package | Version | Purpose |
 |---------|---------|---------|
 | `Swashbuckle.AspNetCore` | 6.6.2 | Swagger / OpenAPI documentation |
-| `Microsoft.Data.SqlClient` | 5.2.2 | SQL Server ADO.NET driver |
+| `Npgsql` | 10.0.2 | PostgreSQL ADO.NET driver |
 
 ---
 

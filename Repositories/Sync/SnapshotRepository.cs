@@ -1,5 +1,5 @@
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Npgsql;
 using BugPredictionBackend.Models.Entities;
 
 namespace BugPredictionBackend.Repositories.Sync;
@@ -10,23 +10,23 @@ public class SnapshotRepository(IConfiguration configuration)
 
     public async Task<int> InsertAsync(SnapshotEnt entity)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_InsertSnapshot", con);
-        cmd.CommandType = CommandType.StoredProcedure;
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT id FROM dbo.sp_insertsnapshot(@p_projectid, @p_branchid, @p_scandate::timestamp, @p_commitid::varchar, @p_bugs, @p_vulnerabilities, @p_codesmells, @p_coverage, @p_duplication, @p_securityrating::varchar, @p_reliabilityrating::varchar, @p_maintainabilityrating::varchar, @p_qualitygatestatus::varchar)", con);
+        cmd.CommandType = CommandType.Text;
 
-        cmd.Parameters.AddWithValue("@ProjectId",             entity.ProjectId);
-        cmd.Parameters.AddWithValue("@BranchId",              (object?)entity.BranchId ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@ScanDate",              entity.ScanDate);
-        cmd.Parameters.AddWithValue("@CommitId",              (object?)entity.CommitId ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@Bugs",                  entity.Bugs);
-        cmd.Parameters.AddWithValue("@Vulnerabilities",       entity.Vulnerabilities);
-        cmd.Parameters.AddWithValue("@CodeSmells",            entity.CodeSmells);
-        cmd.Parameters.AddWithValue("@Coverage",              entity.Coverage);
-        cmd.Parameters.AddWithValue("@Duplication",           entity.Duplication);
-        cmd.Parameters.AddWithValue("@SecurityRating",        (object?)entity.SecurityRating ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@ReliabilityRating",     (object?)entity.ReliabilityRating ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@MaintainabilityRating", (object?)entity.MaintainabilityRating ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@QualityGateStatus",     (object?)entity.QualityGateStatus ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_projectid",             entity.ProjectId);
+        cmd.Parameters.AddWithValue("@p_branchid",              (object?)entity.BranchId ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_scandate",              entity.ScanDate);
+        cmd.Parameters.AddWithValue("@p_commitid",              (object?)entity.CommitId ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_bugs",                  entity.Bugs);
+        cmd.Parameters.AddWithValue("@p_vulnerabilities",       entity.Vulnerabilities);
+        cmd.Parameters.AddWithValue("@p_codesmells",            entity.CodeSmells);
+        cmd.Parameters.AddWithValue("@p_coverage",              entity.Coverage);
+        cmd.Parameters.AddWithValue("@p_duplication",           entity.Duplication);
+        cmd.Parameters.AddWithValue("@p_securityrating",        (object?)entity.SecurityRating ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_reliabilityrating",     (object?)entity.ReliabilityRating ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_maintainabilityrating", (object?)entity.MaintainabilityRating ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_qualitygatestatus",     (object?)entity.QualityGateStatus ?? DBNull.Value);
 
         await con.OpenAsync();
         return Convert.ToInt32(await cmd.ExecuteScalarAsync());
@@ -34,18 +34,18 @@ public class SnapshotRepository(IConfiguration configuration)
 
     public async Task<SnapshotEnt?> GetLatestAsync(int projectId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetLatestSnapshot", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ProjectId", projectId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getlatestsnapshot(@p_projectid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_projectid", projectId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         return await reader.ReadAsync() ? MapSnapshot(reader) : null;
     }
 
-    private static SnapshotEnt MapSnapshot(SqlDataReader r) => new()
+    private static SnapshotEnt MapSnapshot(NpgsqlDataReader r) => new()
     {
         Id                    = r.GetInt32(r.GetOrdinal("Id")),
         ProjectId             = r.GetInt32(r.GetOrdinal("ProjectId")),
@@ -63,3 +63,4 @@ public class SnapshotRepository(IConfiguration configuration)
         QualityGateStatus     = r.IsDBNull(r.GetOrdinal("QualityGateStatus"))     ? null : r.GetString(r.GetOrdinal("QualityGateStatus"))
     };
 }
+

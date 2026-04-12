@@ -1,5 +1,5 @@
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Npgsql;
 using BugPredictionBackend.Models.Entities;
 
 namespace BugPredictionBackend.Repositories.Sync;
@@ -10,18 +10,19 @@ public class QualityGateConditionRepository(IConfiguration configuration)
 
     public async Task InsertAsync(QualityGateConditionEnt entity)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_InsertQualityGateCondition", con);
-        cmd.CommandType = CommandType.StoredProcedure;
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT dbo.sp_insertqualitygatecondition(@p_snapshotid, @p_metrickey::varchar, @p_comparator::varchar, @p_errorthreshold::varchar, @p_actualvalue::varchar, @p_status::varchar)", con);
+        cmd.CommandType = CommandType.Text;
 
-        cmd.Parameters.AddWithValue("@SnapshotId",     entity.SnapshotId);
-        cmd.Parameters.AddWithValue("@MetricKey",      entity.MetricKey);
-        cmd.Parameters.AddWithValue("@Comparator",     (object?)entity.Comparator     ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@ErrorThreshold", (object?)entity.ErrorThreshold ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@ActualValue",    (object?)entity.ActualValue    ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@Status",         entity.Status);
+        cmd.Parameters.AddWithValue("@p_snapshotid",     entity.SnapshotId);
+        cmd.Parameters.AddWithValue("@p_metrickey",      entity.MetricKey);
+        cmd.Parameters.AddWithValue("@p_comparator",     (object?)entity.Comparator     ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_errorthreshold", (object?)entity.ErrorThreshold ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_actualvalue",    (object?)entity.ActualValue    ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_status",         entity.Status);
 
         await con.OpenAsync();
         await cmd.ExecuteNonQueryAsync();
     }
 }
+

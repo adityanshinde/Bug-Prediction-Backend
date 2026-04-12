@@ -1,5 +1,5 @@
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Npgsql;
 using BugPredictionBackend.Models.Entities;
 
 namespace BugPredictionBackend.Repositories.Sync;
@@ -10,16 +10,17 @@ public class BranchRepository(IConfiguration configuration)
 
     public async Task<int> InsertOrUpdateAsync(BranchEnt entity)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_InsertOrUpdateBranch", con);
-        cmd.CommandType = CommandType.StoredProcedure;
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT id FROM dbo.sp_insertorupdatebranch(@p_projectid, @p_branchname::varchar, @p_ismain, @p_analysisdate::timestamp)", con);
+        cmd.CommandType = CommandType.Text;
 
-        cmd.Parameters.AddWithValue("@ProjectId",    entity.ProjectId);
-        cmd.Parameters.AddWithValue("@BranchName",   entity.BranchName);
-        cmd.Parameters.AddWithValue("@IsMain",       entity.IsMain);
-        cmd.Parameters.AddWithValue("@AnalysisDate", (object?)entity.AnalysisDate ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_projectid",    entity.ProjectId);
+        cmd.Parameters.AddWithValue("@p_branchname",   entity.BranchName);
+        cmd.Parameters.AddWithValue("@p_ismain",       entity.IsMain);
+        cmd.Parameters.AddWithValue("@p_analysisdate", (object?)entity.AnalysisDate ?? DBNull.Value);
 
         await con.OpenAsync();
         return Convert.ToInt32(await cmd.ExecuteScalarAsync());
     }
 }
+

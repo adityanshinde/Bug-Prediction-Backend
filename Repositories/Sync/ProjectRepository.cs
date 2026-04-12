@@ -1,5 +1,5 @@
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Npgsql;
 using BugPredictionBackend.Models.Entities;
 
 namespace BugPredictionBackend.Repositories.Sync;
@@ -10,15 +10,15 @@ public class ProjectRepository(IConfiguration configuration)
 
     public async Task<int> InsertOrUpdateAsync(ProjectEnt entity)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_InsertOrUpdateProject", con);
-        cmd.CommandType = CommandType.StoredProcedure;
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT id FROM dbo.sp_insertorupdateproject(@p_projectkey::varchar, @p_name::varchar, @p_organization::varchar, @p_visibility::varchar, @p_lastanalysisdate::timestamp)", con);
+        cmd.CommandType = CommandType.Text;
 
-        cmd.Parameters.AddWithValue("@ProjectKey", entity.ProjectKey);
-        cmd.Parameters.AddWithValue("@Name", entity.Name);
-        cmd.Parameters.AddWithValue("@Organization", (object?)entity.Organization ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@Visibility", (object?)entity.Visibility ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@LastAnalysisDate", (object?)entity.LastAnalysisDate ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_projectkey", entity.ProjectKey);
+        cmd.Parameters.AddWithValue("@p_name", entity.Name);
+        cmd.Parameters.AddWithValue("@p_organization", (object?)entity.Organization ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_visibility", (object?)entity.Visibility ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("@p_lastanalysisdate", (object?)entity.LastAnalysisDate ?? DBNull.Value);
 
         await con.OpenAsync();
         return Convert.ToInt32(await cmd.ExecuteScalarAsync());
@@ -26,12 +26,12 @@ public class ProjectRepository(IConfiguration configuration)
 
     public async Task<List<ProjectEnt>> GetAllAsync()
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetAllProjects", con);
-        cmd.CommandType = CommandType.StoredProcedure;
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getallprojects()", con);
+        cmd.CommandType = CommandType.Text;
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         List<ProjectEnt> projects = [];
         while (await reader.ReadAsync())
@@ -43,18 +43,18 @@ public class ProjectRepository(IConfiguration configuration)
 
     public async Task<ProjectEnt?> GetByIdAsync(int projectId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetProjectById", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ProjectId", projectId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getprojectbyid(@p_projectid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_projectid", projectId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         return await reader.ReadAsync() ? MapProject(reader) : null;
     }
 
-    private static ProjectEnt MapProject(SqlDataReader r) => new()
+    private static ProjectEnt MapProject(NpgsqlDataReader r) => new()
     {
         Id              = r.GetInt32(r.GetOrdinal("Id")),
         ProjectKey      = r.GetString(r.GetOrdinal("ProjectKey")),
@@ -65,3 +65,4 @@ public class ProjectRepository(IConfiguration configuration)
         CreatedDate     = r.GetDateTime(r.GetOrdinal("CreatedDate"))
     };
 }
+

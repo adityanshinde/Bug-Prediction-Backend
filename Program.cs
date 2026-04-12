@@ -49,11 +49,13 @@ builder.Services.AddScoped<MetricsService>();
 builder.Services.AddScoped<QualityGateService>();
 builder.Services.AddScoped<ScanHistoryService>();
 builder.Services.AddScoped<QAService>();
+// AI Insights Service
+builder.Services.AddScoped<AiInsightsService>();
 
 // ── Background Sync ───────────────────────────────────────────────────────────
 builder.Services.AddHostedService<SonarSyncHostedService>();
 
- //── CORS ──────────────────────────────────────────────────────────────────────
+ //── CORS ─────────────────────────────────────────────────────────────────────-
 //string[] allowedOrigins = builder.Configuration
 //    .GetSection("Cors:AllowedOrigins").Get<string[]>() ?? ["http://localhost:4200"];
 

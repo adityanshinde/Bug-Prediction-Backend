@@ -1,5 +1,5 @@
-using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Npgsql;
 using BugPredictionBackend.Models.DTOs;
 
 namespace BugPredictionBackend.Repositories.Read;
@@ -10,13 +10,13 @@ public class DashboardReadRepository(IConfiguration configuration)
 
     public async Task<HeaderDto?> GetHeaderAsync(int projectId)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetProjectHeader", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ProjectId", projectId);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getprojectheader(@p_projectid)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_projectid", projectId);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         return await reader.ReadAsync() ? new HeaderDto
         {
@@ -30,14 +30,14 @@ public class DashboardReadRepository(IConfiguration configuration)
 
     public async Task<List<RecentScanDto>> GetRecentScansAsync(int projectId, int topN = 10)
     {
-        using SqlConnection con = new(_connectionString);
-        using SqlCommand cmd = new("sp_GetRecentScans", con);
-        cmd.CommandType = CommandType.StoredProcedure;
-        cmd.Parameters.AddWithValue("@ProjectId", projectId);
-        cmd.Parameters.AddWithValue("@TopN", topN);
+        using NpgsqlConnection con = new(_connectionString);
+        using NpgsqlCommand cmd = new("SELECT * FROM dbo.sp_getrecentscans(@p_projectid, @p_topn)", con);
+        cmd.CommandType = CommandType.Text;
+        cmd.Parameters.AddWithValue("@p_projectid", projectId);
+        cmd.Parameters.AddWithValue("@p_topn", topN);
 
         await con.OpenAsync();
-        using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+        using NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
 
         List<RecentScanDto> list = [];
         while (await reader.ReadAsync())
@@ -53,3 +53,4 @@ public class DashboardReadRepository(IConfiguration configuration)
         return list;
     }
 }
+
