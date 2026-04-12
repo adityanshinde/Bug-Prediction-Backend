@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using BugPredictionBackend.Configurations;
 using BugPredictionBackend.Models.Sonar;
@@ -19,7 +20,13 @@ public class SonarApiClient(IHttpClientFactory httpClientFactory, IOptions<Sonar
     {
         HttpClient client = httpClientFactory.CreateClient("SonarCloud");
         client.BaseAddress = new Uri(_settings.BaseUrl);
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _settings.Token);
+        // SonarCloud expects the token to be provided as HTTP Basic auth with the token as username and empty password.
+        // e.g. Authorization: Basic BASE64(<token>:)
+        if (!string.IsNullOrWhiteSpace(_settings.Token))
+        {
+            string authValue = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{_settings.Token}:") );
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authValue);
+        }
         return client;
     }
 
