@@ -127,6 +127,8 @@ app.UseHttpsRedirection();
 // Serve a simple static index page at `/`
 app.UseDefaultFiles();
 app.UseStaticFiles();
+// Ensure routing is enabled before CORS and endpoint mapping
+app.UseRouting();
 app.UseCors("AngularPolicy");
 app.UseAuthorization();
 app.MapControllers();
