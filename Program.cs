@@ -124,6 +124,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+// Serve a simple static index page at `/`
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseCors("AngularPolicy");
 app.UseAuthorization();
 app.MapControllers();
