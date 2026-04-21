@@ -6,6 +6,7 @@ namespace BugPredictionBackend.Controllers.Read;
 
 [ApiController]
 [Route("api/projects/{projectId:int}")]
+[Route("api/{projectId:int}")]
 [Tags("Database to Frontend")]
 public class AiInsightsController(AiInsightsService aiInsightsService, ProjectService projectService) : ControllerBase
 {

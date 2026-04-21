@@ -123,7 +123,11 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+bool disableHttpsRedirection = builder.Configuration.GetValue<bool>("DisableHttpsRedirection");
+if (!disableHttpsRedirection)
+{
+    app.UseHttpsRedirection();
+}
 // Serve a simple static index page at `/`
 app.UseDefaultFiles();
 app.UseStaticFiles();
