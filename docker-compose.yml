@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: bugprediction-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: BPCQDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d BPCQDB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./SQL/00_CreateSchema.sql:/docker-entrypoint-initdb.d/00_CreateSchema.sql:ro
+      - ./SQL/01_CreateDatabase_Tables.sql:/docker-entrypoint-initdb.d/01_CreateDatabase_Tables.sql:ro
+      - ./SQL/02_StoredProcedures.sql:/docker-entrypoint-initdb.d/02_StoredProcedures.sql:ro
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bugprediction-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      DisableHttpsRedirection: "true"
+      ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=BPCQDB;Username=postgres;Password=postgres;Pooling=true;
+      SonarSettings__BaseUrl: https://sonarcloud.io
+      SonarSettings__Organization: bpcq
+      SonarSettings__Token: ${SONAR_TOKEN:-}
+      AISettings__BaseUrl: https://api.groq.com
+      AISettings__Model: llama-3.1-8b-instant
+      AISettings__GroqApiKey: ${GROQ_API_KEY:-}
+    ports:
+      - "5000:5000"
+
+volumes:
+  postgres_data:

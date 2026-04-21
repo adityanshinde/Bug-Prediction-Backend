@@ -15,6 +15,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
 // ── Settings ──────────────────────────────────────────────────────────────────
 builder.Services.Configure<SonarSettings>(builder.Configuration.GetSection("SonarSettings"));
+builder.Services.Configure<AiSettings>(builder.Configuration.GetSection("AISettings"));
 
 // ── HTTP Client ───────────────────────────────────────────────────────────────
 builder.Services.AddHttpClient("SonarCloud");
